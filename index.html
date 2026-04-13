@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subhash Dangi — AI & ML Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Clash+Display:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+
+/* ─────────────────────────────────────────
+   TOKENS
+───────────────────────────────────────── */
+:root {
+  --ink:      #0d0d0d;
+  --paper:    #f5f2ec;
+  --paper2:   #ede9e1;
+  --paper3:   #e4dfd5;
+  --accent:   #c8f53e;       /* electric lime — one accent, nowhere else */
+  --accent-dk:#8db500;
+  --wire:     rgba(13,13,13,0.12);
+  --wire2:    rgba(13,13,13,0.25);
+  --ghost:    rgba(13,13,13,0.4);
+  --mono: 'DM Mono', monospace;
+  --disp: 'Clash Display', sans-serif;
+  --serif: 'Instrument Serif', serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--mono);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ─── CUSTOM CURSOR ─── */
+#cur {
+  position: fixed; width: 12px; height: 12px;
+  background: var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.08s, width 0.2s, height 0.2s;
+  mix-blend-mode: difference;
+}
+body:has(a:hover) #cur,
+body:has(button:hover) #cur { width: 40px; height: 40px; }
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: #2a2a2a; }
+
+/* ─────────────────────────────────────────
+   NAV
+───────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(1.5rem, 5vw, 5rem); height: 56px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  background: rgba(13,13,13,0.85);
+  backdrop-filter: blur(16px);
+}
+.n-logo {
+  font-family: var(--disp); font-size: 15px; font-weight: 600;
+  letter-spacing: -0.01em; color: var(--paper);
+}
+.n-logo em { color: var(--accent); font-style: normal; }
+.n-links { display: flex; gap: 2rem; list-style: none; }
+.n-links a {
+  font-size: 11px; color: rgba(255,255,255,0.4);
+  text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase;
+  transition: color 0.2s;
+}
+.n-links a:hover { color: var(--paper); }
+.n-avail {
+  font-size: 11px; color: var(--accent);
+  letter-spacing: 0.08em; display: flex; align-items: center; gap: 7px;
+}
+.n-avail::before {
+  content: ''; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent); animation: pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(200,245,62,.5)} 50%{box-shadow:0 0 0 6px rgba(200,245,62,0)} }
+
+/* ─────────────────────────────────────────
+   HERO
+───────────────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: 56px 0 0;
+  position: relative; overflow: hidden;
+}
+
+/* ambient glow — subtle, not distracting */
+#hero::before {
+  content: '';
+  position: absolute; top: -10%; left: -10%; width: 60%; height: 70%;
+  background: radial-gradient(ellipse at center, rgba(200,245,62,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-main {
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 5rem clamp(1.5rem, 5vw, 5rem) 3.5rem;
+}
+
+.h-label {
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255,255,255,0.35); margin-bottom: 2rem;
+  display: flex; align-items: center; gap: 12px;
+}
+.h-label::before { content: ''; width: 28px; height: 1px; background: var(--accent); }
+
+.h-title {
+  font-family: var(--disp); font-weight: 700;
+  font-size: clamp(72px, 12vw, 160px);
+  line-height: 0.87; letter-spacing: -0.04em;
+  margin-bottom: 3rem;
+}
+.h-title .row2 { color: rgba(255,255,255,0.18); }
+.h-title .acc  { color: var(--accent); }
+
+.h-bottom {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 2rem; flex-wrap: wrap;
+}
+.h-tagline {
+  font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.7;
+  max-width: 380px; font-weight: 300; font-style: italic;
+  font-family: var(--serif);
+}
+.h-tagline strong { color: var(--paper); font-style: normal; font-family: var(--mono); font-weight: 400; font-size: 13px; }
+.h-ctas { display: flex; gap: 10px; flex-shrink: 0; }
+.btn-a {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; text-decoration: none; padding: 12px 22px;
+  border-radius: 2px; transition: all 0.2s;
+}
+.btn-solid { background: var(--accent); color: var(--ink); font-weight: 500; }
+.btn-solid:hover { background: #d8ff55; transform: translateY(-1px); }
+.btn-wire  { border: 1px solid rgba(255,255,255,0.18); color: rgba(255,255,255,0.5); }
+.btn-wire:hover  { border-color: var(--paper); color: var(--paper); }
+
+/* stats bar */
+.hero-bar {
+  display: flex; border-top: 1px solid rgba(255,255,255,0.07);
+}
+.hb-stat {
+  flex: 1; padding: 1.8rem clamp(1.5rem, 3vw, 2.5rem);
+  border-right: 1px solid rgba(255,255,255,0.07);
+}
+.hb-stat:last-child { border-right: none; }
+.hb-val {
+  font-family: var(--disp); font-size: 36px; font-weight: 700;
+  color: var(--accent); line-height: 1; letter-spacing: -0.03em;
+  margin-bottom: 6px;
+}
+.hb-lbl { font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 0.12em; text-transform: uppercase; }
+
+/* ─────────────────────────────────────────
+   SECTION SCAFFOLDING
+───────────────────────────────────────── */
+.sec {
+  padding: 4.5rem clamp(1.5rem, 5vw, 5rem);
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.sec-sidebar { display: none; }
+.sec-content { width: 100%; }
+.sec-heading {
+  font-family: var(--disp); font-size: clamp(26px, 3.5vw, 44px);
+  font-weight: 700; letter-spacing: -0.03em; line-height: 1;
+  margin-bottom: 2rem;
+}
+
+/* reveal */
+.rv { opacity: 0; transform: translateY(20px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.rv.in { opacity: 1; transform: none; }
+
+/* ─────────────────────────────────────────
+   ABOUT
+───────────────────────────────────────── */
+#about { background: #111111; }
+
+.ab-grid { display: grid; grid-template-columns: 1fr 340px; gap: 4rem; align-items: start; }
+
+.ab-text p {
+  font-size: 14px; color: rgba(255,255,255,0.5);
+  line-height: 1.9; margin-bottom: 1.1rem; font-weight: 300;
+}
+.ab-text p strong { color: var(--paper); font-weight: 500; }
+.ab-text p .hi { color: var(--accent); }
+
+.ab-facts {
+  margin-top: 2.5rem; padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.ab-row {
+  display: grid; grid-template-columns: 80px 1fr;
+  gap: 1rem; font-size: 12px;
+}
+.ab-key { color: rgba(255,255,255,0.22); }
+.ab-val { color: rgba(255,255,255,0.65); }
+.ab-val a { color: var(--accent); text-decoration: none; transition: opacity 0.15s; }
+.ab-val a:hover { opacity: 0.7; }
+
+/* code block */
+.code-box {
+  background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px; overflow: hidden;
+}
+.cb-bar {
+  display: flex; align-items: center; gap: 7px;
+  padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.02);
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dt-r{background:#ff5f57}.dt-y{background:#febc2e}.dt-g{background:#28c840}
+.cb-file { font-size: 11px; color: rgba(255,255,255,0.2); margin-left: 4px; }
+.cb-code { padding: 1.4rem 1.5rem; font-size: 12px; line-height: 1.95; }
+.ck { color: #c792ea; }
+.cf { color: #82aaff; }
+.cs { color: var(--accent); }
+.cc { color: rgba(255,255,255,0.2); }
+.cn { color: #f78c6c; }
+.cx { color: rgba(255,255,255,0.7); }
+
+/* ─────────────────────────────────────────
+   SKILLS  — redesigned
+───────────────────────────────────────── */
+#skills { background: var(--ink); }
+
+/* grid of skill category cards */
+.sk-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.sk-card {
+  background: #0d0d0d;
+  padding: 1.8rem 1.6rem 1.6rem;
+  transition: background 0.2s;
+  position: relative;
+}
+.sk-card:hover { background: #131313; }
+.sk-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: transparent;
+  transition: background 0.25s;
+}
+.sk-card:hover::before { background: var(--accent); }
+
+.sk-card-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.22);
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sk-card-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+}
+
+.sk-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.sk-tag {
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 5px 12px;
+  border-radius: 3px;
+  transition: all 0.18s;
+  cursor: default;
+  letter-spacing: 0.01em;
+}
+.sk-tag:hover {
+  color: var(--accent);
+  border-color: rgba(200,245,62,0.3);
+  background: rgba(200,245,62,0.06);
+  transform: translateY(-1px);
+}
+
+/* accent tag variant for key skills */
+.sk-tag.key {
+  color: var(--accent);
+  border-color: rgba(200,245,62,0.2);
+  background: rgba(200,245,62,0.05);
+  font-weight: 500;
+}
+
+/* ── bottom proficiency strip ── */
+.sk-proficiency {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+.sk-prof-item {}
+.sk-prof-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  margin-bottom: 8px;
+}
+.sk-prof-bar {
+  height: 2px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.sk-prof-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  width: 0;
+  transition: width 1s ease 0.3s;
+}
+.sk-prof-fill.in { /* triggered by JS */ }
+
+/* ─────────────────────────────────────────
+   EXPERIENCE
+───────────────────────────────────────── */
+#experience { background: #111111; }
+
+.exp-block {
+  padding: 2.5rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.exp-block:last-child { border-bottom: none; padding-bottom: 0; }
+.exp-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; margin-bottom: 1.5rem; }
+.exp-title { font-family: var(--disp); font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+.exp-meta { text-align: right; flex-shrink: 0; }
+.exp-co { font-size: 12px; color: var(--accent); margin-bottom: 3px; }
+.exp-date { font-size: 11px; color: rgba(255,255,255,0.25); letter-spacing: 0.06em; }
+.exp-pts { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.exp-pts li {
+  font-size: 13px; color: rgba(255,255,255,0.45);
+  line-height: 1.75; display: grid;
+  grid-template-columns: 20px 1fr; gap: 10px;
+  font-weight: 300;
+}
+.exp-pts li::before { content: '→'; color: rgba(255,255,255,0.15); font-size: 12px; margin-top: 2px; }
+
+/* ─────────────────────────────────────────
+   PROJECTS
+───────────────────────────────────────── */
+#projects { background: var(--ink); }
+
+.proj-list { display: flex; flex-direction: column; gap: 1px; }
+.proj-item {
+  background: #111111;
+  padding: 2rem 2.2rem;
+  display: grid; grid-template-columns: 48px 1fr auto;
+  gap: 1.8rem; align-items: start;
+  transition: background 0.2s;
+  border-radius: 4px;
+}
+.proj-item:hover { background: #161616; }
+.proj-n {
+  font-family: var(--disp); font-size: 28px; font-weight: 700;
+  color: rgba(255,255,255,0.08); letter-spacing: -0.04em;
+  line-height: 1; margin-top: 4px;
+}
+.proj-body { }
+.proj-title {
+  font-family: var(--disp); font-size: 20px; font-weight: 600;
+  letter-spacing: -0.02em; margin-bottom: 0.6rem;
+}
+.proj-desc {
+  font-size: 12px; color: rgba(255,255,255,0.4);
+  line-height: 1.8; font-weight: 300; margin-bottom: 1rem;
+  max-width: 560px;
+}
+.proj-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem; }
+.chip {
+  font-size: 11px; color: var(--accent);
+  background: rgba(200,245,62,0.08); border: 1px solid rgba(200,245,62,0.15);
+  padding: 3px 10px; border-radius: 100px;
+}
+.proj-stack { display: flex; flex-wrap: wrap; gap: 8px; }
+.st-pill {
+  font-size: 10px; color: rgba(255,255,255,0.25);
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+.st-pill::before { content: '/'; margin-right: 3px; opacity: 0.5; }
+.proj-action { padding-top: 4px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.proj-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--accent);
+  text-decoration: none; border: 1px solid rgba(200,245,62,0.25);
+  padding: 8px 14px; border-radius: 2px;
+  transition: all 0.18s; white-space: nowrap;
+}
+.proj-btn:hover { background: rgba(200,245,62,0.08); }
+
+/* ─────────────────────────────────────────
+   CONTACT
+───────────────────────────────────────── */
+#contact { background: #111111; }
+
+.ct-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; }
+
+.ct-intro {
+  font-family: var(--serif); font-style: italic;
+  font-size: 22px; line-height: 1.55;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 2.5rem;
+}
+.ct-intro strong { color: var(--paper); font-style: normal; font-family: var(--mono); font-weight: 400; font-size: 14px; }
+
+.ct-links { display: flex; flex-direction: column; gap: 0; }
+.ct-link {
+  display: flex; align-items: center; gap: 16px;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  text-decoration: none; transition: all 0.18s;
+}
+.ct-link:first-child { border-top: 1px solid rgba(255,255,255,0.06); }
+.ct-link:hover .ct-link-val { color: var(--accent); }
+.ct-link:hover { padding-left: 8px; }
+.ct-ico {
+  width: 34px; height: 34px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.ct-ico svg {
+  width: 16px; height: 16px;
+  stroke: rgba(255,255,255,0.3); fill: none;
+  stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+}
+.ct-link-info { display: flex; flex-direction: column; gap: 2px; }
+.ct-link-lbl { font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 0.12em; text-transform: uppercase; }
+.ct-link-val { font-size: 13px; color: rgba(255,255,255,0.6); transition: color 0.18s; }
+
+/* form */
+.ct-form { display: flex; flex-direction: column; gap: 16px; }
+.fg { display: flex; flex-direction: column; gap: 6px; }
+.fg label { font-size: 10px; color: rgba(255,255,255,0.22); letter-spacing: 0.12em; text-transform: uppercase; }
+.fg input, .fg textarea {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  color: var(--paper); font-family: var(--mono); font-size: 13px;
+  padding: 11px 14px; border-radius: 4px; outline: none; resize: none;
+  transition: border-color 0.2s;
+}
+.fg input:focus, .fg textarea:focus { border-color: rgba(255,255,255,0.2); }
+.fg textarea { height: 110px; }
+.fg input::placeholder, .fg textarea::placeholder { color: rgba(255,255,255,0.18); }
+.btn-send {
+  background: transparent; border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.5); font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.12em; text-transform: uppercase; padding: 13px;
+  border-radius: 4px; cursor: none; transition: all 0.2s;
+}
+.btn-send:hover { border-color: var(--accent); color: var(--accent); background: rgba(200,245,62,0.05); }
+
+/* ─────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────── */
+footer {
+  padding: 1.4rem clamp(1.5rem, 5vw, 5rem);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: center; justify-content: space-between;
+}
+footer span { font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 0.06em; }
+.ft-back {
+  font-size: 11px; color: rgba(255,255,255,0.2); text-decoration: none;
+  letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.18s;
+}
+.ft-back:hover { color: var(--accent); }
+
+/* ─────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────── */
+@media (max-width: 900px) {
+  nav { padding: 0 1.5rem; }
+  .n-links { display: none; }
+  .hero-main { padding: 3rem 1.5rem 2.5rem; }
+  .hero-bar { flex-wrap: wrap; }
+  .hb-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); flex-basis: 50%; }
+  .sec { padding: 3rem 1.5rem; }
+  .ab-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .ct-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .proj-item { grid-template-columns: 1fr; gap: 0.5rem; }
+  .proj-n { font-size: 20px; }
+  .exp-header { flex-direction: column; gap: 0.4rem; }
+  .exp-meta { text-align: left; }
+  footer { flex-direction: column; gap: 8px; text-align: center; }
+  .sk-grid { grid-template-columns: 1fr 1fr; }
+  .sk-proficiency { grid-template-columns: 1fr 1fr; gap: 1rem; }
+}
+@media (max-width: 560px) {
+  .sk-grid { grid-template-columns: 1fr; }
+  .sk-proficiency { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="n-logo">Subhash<em>.</em>Dangi</div>
+  <ul class="n-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <span class="n-avail">Open to work</span>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-main">
+    <p class="h-label">AI &amp; Machine Learning Engineer — Gwalior, India</p>
+    <h1 class="h-title">
+      SUBHASH<br>
+      <span class="row2">DAN<span class="acc">GI</span></span>
+    </h1>
+    <div class="h-bottom">
+      <p class="h-tagline">
+        Building systems that learn — from <strong>RLHF-based LLM training</strong>
+        to production-grade <strong>computer vision</strong> and predictive pipelines.
+      </p>
+      <div class="h-ctas">
+        <a href="#projects" class="btn-a btn-solid">View Projects</a>
+        <a href="#contact"  class="btn-a btn-wire">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-bar">
+    <div class="hb-stat">
+      <div class="hb-val">97%</div>
+      <div class="hb-lbl">Face recognition accuracy</div>
+    </div>
+    <div class="hb-stat">
+      <div class="hb-val">95%+</div>
+      <div class="hb-lbl">RLHF annotation quality</div>
+    </div>
+    <div class="hb-stat">
+      <div class="hb-val">24K+</div>
+      <div class="hb-lbl">Training images processed</div>
+    </div>
+    <div class="hb-stat">
+      <div class="hb-val">10K+</div>
+      <div class="hb-lbl">Agricultural records modeled</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about" class="sec">
+  <div class="sec-sidebar rv">
+    <div class="sec-index">01</div>
+    <div class="sec-name">About</div>
+  </div>
+  <div class="sec-content">
+    <h2 class="sec-heading rv">Who I Am</h2>
+    <div class="ab-grid">
+      <div class="ab-text rv">
+        <p>I'm a <strong>Data Science &amp; Machine Learning professional</strong> with hands-on experience in RLHF-based LLM training, deep learning architectures (CNN, LSTM), and building end-to-end ML pipelines from messy raw data to deployed, production-ready systems.</p>
+        <p>At <strong>Ethara.AI</strong>, I evaluated large-scale conversational datasets for LLM improvement — sustaining <span class="hi">95%+ annotation accuracy</span> across six quality dimensions including safety, coherence, and hallucination detection across thousands of samples.</p>
+        <p>My project work includes a <strong>biometric authentication system</strong> that hit <span class="hi">97% face recognition accuracy</span> on 24,000+ training images, and a multi-module <strong>agricultural intelligence system</strong> processing over 10,000 crop records for price forecasting and trend analysis.</p>
+        <p>Currently pursuing <strong>B.E. Computer Science at MITS Gwalior</strong> (2024–27), actively seeking AI/ML engineering roles where I can build systems that matter.</p>
+        <div class="ab-facts">
+          <div class="ab-row"><span class="ab-key">Location</span><span class="ab-val">Gwalior, MP, India</span></div>
+          <div class="ab-row"><span class="ab-key">Email</span><span class="ab-val"><a href="/cdn-cgi/l/email-protection#84f7f0bdb2b0b0bdb0c4e3e9e5ede8aae7ebe9"><span class="__cf_email__" data-cfemail="8dfef9b4bbb9b9b4b9cdeae0ece4e1a3eee2e0">[email&#160;protected]</span></a></span></div>
+          <div class="ab-row"><span class="ab-key">Phone</span><span class="ab-val">+91-6265238648</span></div>
+          <div class="ab-row"><span class="ab-key">GitHub</span><span class="ab-val"><a href="https://github.com/st732887/subhashthakur" target="_blank">github.com/st732887</a></span></div>
+          <div class="ab-row"><span class="ab-key">LinkedIn</span><span class="ab-val"><a href="https://linkedin.com/in/subhash-thakur-7ab548335" target="_blank">subhash-thakur</a></span></div>
+        </div>
+      </div>
+      <div class="code-box rv">
+        <div class="cb-bar">
+          <div class="dot dt-r"></div><div class="dot dt-y"></div><div class="dot dt-g"></div>
+          <span class="cb-file">profile.py</span>
+        </div>
+        <div class="cb-code"><pre><span class="cc"># Subhash Dangi</span>
+
+<span class="ck">class</span> <span class="cf">MLEngineer</span><span class="cx">:</span>
+
+  <span class="cf">name</span>     <span class="cx">=</span> <span class="cs">"Subhash Dangi"</span>
+  <span class="cf">location</span> <span class="cx">=</span> <span class="cs">"Gwalior, India"</span>
+  <span class="cf">status</span>   <span class="cx">=</span> <span class="cs">"Open to work"</span>
+
+  <span class="cf">expertise</span> <span class="cx">= [</span>
+    <span class="cs">"RLHF / LLM Training"</span><span class="cx">,</span>
+    <span class="cs">"CNN / LSTM"</span><span class="cx">,</span>
+    <span class="cs">"Computer Vision"</span><span class="cx">,</span>
+    <span class="cs">"Predictive Modeling"</span><span class="cx">,</span>
+    <span class="cs">"NLP & Data Annotation"</span><span class="cx">,</span>
+  <span class="cx">]</span>
+
+  <span class="cf">education</span> <span class="cx">= [</span>
+    <span class="cs">"B.E. CSE — MITS (2024–27)"</span><span class="cx">,</span>
+    <span class="cs">"Diploma — SRGP (2021–24)"</span><span class="cx">,</span>
+  <span class="cx">]</span>
+
+  <span class="ck">def</span> <span class="cf">goal</span><span class="cx">(</span>self<span class="cx">):</span>
+    <span class="ck">return</span> <span class="cs">"Build systems that matter."</span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS ── -->
+<section id="skills" class="sec">
+  <div class="sec-sidebar rv">
+    <div class="sec-index">02</div>
+    <div class="sec-name">Skills</div>
+  </div>
+  <div class="sec-content">
+    <h2 class="sec-heading rv">Technical Stack</h2>
+    <div class="rv">
+      <div class="sk-grid">
+
+        <div class="sk-card">
+          <div class="sk-card-label">Languages</div>
+          <div class="sk-tags">
+            <span class="sk-tag key">Python</span>
+            <span class="sk-tag key">SQL</span>
+          </div>
+        </div>
+
+        <div class="sk-card">
+          <div class="sk-card-label">ML &amp; AI</div>
+          <div class="sk-tags">
+            <span class="sk-tag key">RLHF</span>
+            <span class="sk-tag key">LLMs</span>
+            <span class="sk-tag">CNN</span>
+            <span class="sk-tag">LSTM</span>
+            <span class="sk-tag">Regression</span>
+            <span class="sk-tag">Classification</span>
+            <span class="sk-tag">Cross-Validation</span>
+          </div>
+        </div>
+
+        <div class="sk-card">
+          <div class="sk-card-label">Data Engineering</div>
+          <div class="sk-tags">
+            <span class="sk-tag key">Pandas</span>
+            <span class="sk-tag">NumPy</span>
+            <span class="sk-tag">Feature Engineering</span>
+            <span class="sk-tag">Data Cleaning</span>
+            <span class="sk-tag">Advanced Excel</span>
+          </div>
+        </div>
+
+        <div class="sk-card">
+          <div class="sk-card-label">Visualization</div>
+          <div class="sk-tags">
+            <span class="sk-tag key">Tableau</span>
+            <span class="sk-tag">Power BI</span>
+            <span class="sk-tag">Matplotlib</span>
+            <span class="sk-tag">Seaborn</span>
+          </div>
+        </div>
+
+        <div class="sk-card">
+          <div class="sk-card-label">Databases</div>
+          <div class="sk-tags">
+            <span class="sk-tag key">MySQL</span>
+            <span class="sk-tag">Spark SQL</span>
+            <span class="sk-tag">BigQuery</span>
+          </div>
+        </div>
+
+        <div class="sk-card">
+          <div class="sk-card-label">Tools &amp; Metrics</div>
+          <div class="sk-tags">
+            <span class="sk-tag">Git / GitHub</span>
+            <span class="sk-tag">OpenCV</span>
+            <span class="sk-tag">F1-Score</span>
+            <span class="sk-tag">RMSE</span>
+            <span class="sk-tag">FAR / FRR</span>
+            <span class="sk-tag">Confusion Matrix</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Proficiency bars -->
+      <div class="sk-proficiency rv">
+        <div class="sk-prof-item">
+          <div class="sk-prof-label">Python / ML</div>
+          <div class="sk-prof-bar"><div class="sk-prof-fill" data-width="88%"></div></div>
+        </div>
+        <div class="sk-prof-item">
+          <div class="sk-prof-label">Deep Learning</div>
+          <div class="sk-prof-bar"><div class="sk-prof-fill" data-width="82%"></div></div>
+        </div>
+        <div class="sk-prof-item">
+          <div class="sk-prof-label">Data Engineering</div>
+          <div class="sk-prof-bar"><div class="sk-prof-fill" data-width="78%"></div></div>
+        </div>
+        <div class="sk-prof-item">
+          <div class="sk-prof-label">Visualization</div>
+          <div class="sk-prof-bar"><div class="sk-prof-fill" data-width="74%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EXPERIENCE ── -->
+<section id="experience" class="sec">
+  <div class="sec-sidebar rv">
+    <div class="sec-index">03</div>
+    <div class="sec-name">Experience</div>
+  </div>
+  <div class="sec-content">
+    <h2 class="sec-heading rv">Work History</h2>
+    <div class="rv">
+      <div class="exp-block">
+        <div class="exp-header">
+          <div class="exp-title">Data Labeling Specialist (RLHF)</div>
+          <div class="exp-meta">
+            <div class="exp-co">Ethara.AI · Gwalior, MP</div>
+            <div class="exp-date">Jul 2024 — Jan 2025</div>
+          </div>
+        </div>
+        <ul class="exp-pts">
+          <li>Annotated and assessed large-scale conversational datasets for LLM training via RLHF, maintaining 95%+ annotation accuracy across 6 quality dimensions: accuracy, relevance, coherence, safety, bias detection, and hallucination identification.</li>
+          <li>Ranked and evaluated 1,000+ AI-generated responses per month, reducing downstream model error rates through systematic quality assurance and validation workflows.</li>
+          <li>Processed thousands of labeled samples over 7 months, maintaining dataset consistency and integrity to support model fine-tuning and reinforcement learning optimization.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECTS ── -->
+<section id="projects" class="sec">
+  <div class="sec-sidebar rv">
+    <div class="sec-index">04</div>
+    <div class="sec-name">Projects</div>
+  </div>
+  <div class="sec-content">
+    <h2 class="sec-heading rv">Featured Work</h2>
+    <div class="proj-list rv">
+
+      <div class="proj-item">
+        <div class="proj-n">01</div>
+        <div class="proj-body">
+          <div class="proj-title">LiveTransator</div>
+          <p class="proj-desc">A real-time AI translation app deployed live on Hugging Face Spaces. Demonstrates end-to-end deployment of language models — users can translate text instantly through a clean web interface without any setup.</p>
+          <div class="proj-chips">
+            <span class="chip">Live on HuggingFace</span>
+            <span class="chip">Real-time AI</span>
+            <span class="chip">Deployed</span>
+          </div>
+          <div class="proj-stack">
+            <span class="st-pill">Python</span>
+            <span class="st-pill">LLMs</span>
+            <span class="st-pill">Hugging Face</span>
+            <span class="st-pill">Gradio</span>
+          </div>
+        </div>
+        <div class="proj-action">
+          <a href="https://livelangtranslator.netlify.app/" target="_blank" class="proj-btn">Live Demo ↗</a>
+        </div>
+      </div>
+
+      <div class="proj-item">
+        <div class="proj-n">02</div>
+        <div class="proj-body">
+          <div class="proj-title">FutureFarm — Agricultural Intelligence</div>
+          <p class="proj-desc">A 3-module predictive system for crop price forecasting, market trend analysis, and seed quality assessment. Processed 10,000+ records end-to-end, improving input quality by ~30%. Models evaluated on Accuracy, Precision, Recall, F1, and RMSE.</p>
+          <div class="proj-chips">
+            <span class="chip">10K+ Records</span>
+            <span class="chip">~30% Quality Gain</span>
+            <span class="chip">3 Modules</span>
+          </div>
+          <div class="proj-stack">
+            <span class="st-pill">Python</span>
+            <span class="st-pill">LSTM</span>
+            <span class="st-pill">CNN</span>
+            <span class="st-pill">LLMs</span>
+            <span class="st-pill">Pandas</span>
+            <span class="st-pill">Matplotlib</span>
+          </div>
+        </div>
+        <div class="proj-action">
+          <a href="https://huggingface.co/spaces/subhashdangi/GlobFarm" target="_blank" class="proj-btn">Live Demo ↗</a>
+        </div>
+      </div>
+
+      <div class="proj-item">
+        <div class="proj-n">03</div>
+        <div class="proj-body">
+          <div class="proj-title">Biometric Authentication System</div>
+          <p class="proj-desc">Multimodal CNN-based system for face and fingerprint recognition. Trained on 24,000+ face images across 12 classes and 2,000+ fingerprint samples. Achieved 97% face recognition accuracy — production-level reliability confirmed via FAR, FRR, and Confusion Matrix analysis.</p>
+          <div class="proj-chips">
+            <span class="chip">97% Accuracy</span>
+            <span class="chip">24K+ Images</span>
+            <span class="chip">Enterprise-ready</span>
+          </div>
+          <div class="proj-stack">
+            <span class="st-pill">Python</span>
+            <span class="st-pill">CNN</span>
+            <span class="st-pill">OpenCV</span>
+            <span class="st-pill">Kaggle</span>
+          </div>
+        </div>
+        <div class="proj-action"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact" class="sec">
+  <div class="sec-sidebar rv">
+    <div class="sec-index">05</div>
+    <div class="sec-name">Contact</div>
+  </div>
+  <div class="sec-content">
+    <h2 class="sec-heading rv">Get In Touch</h2>
+    <div class="ct-grid">
+      <div class="rv">
+        <p class="ct-intro">
+          Open to full-time roles, internships, and collaborations.<br>
+          If you have something interesting — <strong>let's talk.</strong>
+        </p>
+        <div class="ct-links">
+
+          <a href="mailto:st964494@gmail.com" class="ct-link">
+            <div class="ct-ico"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg></div>
+            <div class="ct-link-info">
+              <span class="ct-link-lbl">Email</span>
+              <span class="ct-link-val"><span class="__cf_email__" data-cfemail="4330377a7577777a7703242e222a2f6d202c2e">st964494@gmail.com</span></span>
+            </div>
+          </a>
+
+          <a href="https://github.com/st732887/subhashthakur" target="_blank" class="ct-link">
+            <div class="ct-ico"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+            <div class="ct-link-info">
+              <span class="ct-link-lbl">GitHub</span>
+              <span class="ct-link-val">github.com/st732887</span>
+            </div>
+          </a>
+
+          <a href="https://linkedin.com/in/subhash-thakur-7ab548335" target="_blank" class="ct-link">
+            <div class="ct-ico"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+            <div class="ct-link-info">
+              <span class="ct-link-lbl">LinkedIn</span>
+              <span class="ct-link-val">subhash-thakur-7ab548335</span>
+            </div>
+          </a>
+
+          <a href="https://huggingface.co/subhashdangi" target="_blank" class="ct-link">
+            <div class="ct-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="9" r="1.2" fill="rgba(255,255,255,0.3)" stroke="none"/><circle cx="15" cy="9" r="1.2" fill="rgba(255,255,255,0.3)" stroke="none"/></svg></div>
+            <div class="ct-link-info">
+              <span class="ct-link-lbl">Hugging Face</span>
+              <span class="ct-link-val">huggingface.co/subhashdangi</span>
+            </div>
+          </a>
+
+          <a href="tel:+916265238648" class="ct-link">
+            <div class="ct-ico"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l1.19-1.19a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+            <div class="ct-link-info">
+              <span class="ct-link-lbl">Phone</span>
+              <span class="ct-link-val">+91-6265238648</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <div class="ct-form rv">
+        <div class="fg">
+          <label>Name</label>
+          <input type="text" placeholder="Your name">
+        </div>
+        <div class="fg">
+          <label>Email</label>
+          <input type="email" placeholder="your@email.com">
+        </div>
+        <div class="fg">
+          <label>Message</label>
+          <textarea placeholder="Tell me about your project or opportunity..."></textarea>
+        </div>
+        <button class="btn-send" onclick="alert('Connect to Formspree or EmailJS to enable sending.')">Send Message →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Subhash Dangi — AI &amp; ML Engineer</span>
+  <a href="#hero" class="ft-back">Back to top ↑</a>
+</footer>
+
+<script>
+  /* cursor */
+  const cur = document.getElementById('cur');
+  document.addEventListener('mousemove', e => {
+    cur.style.left = e.clientX + 'px';
+    cur.style.top  = e.clientY + 'px';
+  });
+
+  /* reveal on scroll */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        /* animate proficiency bars when skills section visible */
+        if (en.target.classList.contains('sk-proficiency') || en.target.closest('.sk-proficiency')) {
+          document.querySelectorAll('.sk-prof-fill').forEach(bar => {
+            bar.style.width = bar.dataset.width;
+          });
+        }
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+  /* also trigger proficiency bars when the skills section enters view */
+  const profObs = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        document.querySelectorAll('.sk-prof-fill').forEach(bar => {
+          setTimeout(() => { bar.style.width = bar.dataset.width; }, 200);
+        });
+      }
+    });
+  }, { threshold: 0.2 });
+
+  const skillsSec = document.getElementById('skills');
+  if (skillsSec) profObs.observe(skillsSec);
+</script>
